@@ -1,0 +1,77 @@
+ALGO : Programme du pendu. Laetitia Monnier
+BUT : Un programme demandant à l'utilisateur d'entrer un mot, puis deviner celui-ci lettre par lettre avec un nombre de vie déterminé.
+ENTREE : Le mot à deviner puis un caractère alphabétique pour deviner celui-ci.
+SORTIE : Affichage des bons caractères. Diminution de la vie si le caractère saisie n'existe pas dans le mot.
+
+CONST
+	TAILLE <- 30
+
+VAR
+	vie, longMot, i, bonnesLettres : ENTIER
+	boolAlpha, boolDansLeMot : BOOLEEN
+	lettre : CARACTERE
+	tabMot, tmpMot, tabMotADeviner, tabLettreMauvaise, tmpLettre : CHAINE
+
+DEBUT
+	vie <- 5
+	longMot <- 0
+	i <- i
+	boolAlpha <- VRAI
+	boolDansLeMot <- FAUX
+	bonnesLettres <- 0
+
+	ECRIRE("Programme du pendu.")
+
+	TANT QUE (boolAlpha = 0) FAIRE
+		ECRIRE("Saisissez un mot :")
+		LIRE(tmpMot)
+		longMot <- LONGUEUR(tmpMot)
+		boolAlpha <- 1
+
+		POUR i <- 0 A i = longMot FAIRE
+			SI (estAlpha(tmpMot[i]))
+				tabMot[i] <- enMinuscule(tmpMot[i])
+			SINON
+				boolAlpha <- 0
+			FINSI
+		FINPOUR
+	FINTANTQUE
+
+	effaceEcran()
+	POUR i <- 0 A i = longMot
+		tabMotADeviner[i] <- '-'
+	FINPOUR
+
+	TANT QUE (bonnesLettres != longMot) ET (vie > 0) FAIRE
+		ECRIRE(tabMotADeviner)
+		ECRIRE("Entrez une lettre :")
+		LIRE(lettre)
+
+		POUR i <- 0 A i = longMot FAIRE
+			SI (tabMot[i] = lettre) ET (tabMotADeviner[i] = '-') 
+				tabMotADeviner[i] <- lettre
+				bonnesLettres <- bonnesLettres + 1
+				boolDansLeMot <- VRAI
+			FINSI
+		FINPOUR
+
+		SI (boolDansLeMot = 0)
+			vie <- vie - 1
+			tmpLettre[0] <- lettre
+			concatenation(tabLettreMauvaise, tmpLettre, LONGUEUR(tmpLettre))
+		SINON
+			boolDansLeMot <- FAUX
+		FINSI
+
+		ECRIRE("Lettres mauvaises : " & tabLettreMauvaise)
+		ECRIRE("Il vous reste " & vie)
+	FINTANTQUE
+
+	SI (vie = 0)
+		ECRIRE("Vous avez perdu !")
+	SINON
+		ECRIRE("Vous avez gagné !!")
+	FINSI
+
+	ECRIRE("Le mot était : " tabMot)
+FIN.
