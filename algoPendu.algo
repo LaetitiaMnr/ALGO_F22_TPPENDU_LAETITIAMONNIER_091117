@@ -13,7 +13,7 @@ VAR
 	tabMot, tmpMot, tabMotADeviner, tabLettreMauvaise, tmpLettre : CHAINE
 
 DEBUT
-	vie <- 5
+	vie <- 7
 	longMot <- 0
 	i <- i
 	boolAlpha <- VRAI
