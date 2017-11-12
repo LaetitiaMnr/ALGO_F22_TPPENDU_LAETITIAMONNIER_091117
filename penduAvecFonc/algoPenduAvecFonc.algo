@@ -1,0 +1,109 @@
+ALGO : Programme du pendu. Laetitia Monnier
+BUT : Un programme demandant à l'utilisateur d'entrer un mot, puis deviner celui-ci, lettre par lettre avec un nombre de vie déterminé.
+ENTREE : Le mot à deviner puis un caractère alphabétique pour deviner celui-ci.
+SORTIE : Affichage des bons caractères. Diminution de la vie si le caractère saisie n'existe pas dans le mot.
+
+CONST
+	TAILLE <- 30
+
+BUT : Vérifie que l'utilisateur entre bien des caractères alphabétique dans tabMot.
+PROCEDURE verifAlpha(var tmpMot, tabMot : CHAINE, var longMot : ENTIER)
+VAR 
+	i : ENTIER
+	boolAlpha : BOOLEEN
+DEBUT
+	boolAlpha <- VRAI
+	TANT QUE (boolAlpha = 0) FAIRE
+		ECRIRE("Saisissez un mot :")
+		LIRE(mot)
+		longMot <- LONGUEUR(mot)
+		boolAlpha <- 1
+
+		POUR i <- 0 A i = longMot FAIRE
+			SI (estAlpha(tmpMot[i])
+				tabMot[i] <- enMinuscule(tmpMot[i])
+			SINON
+				boolAlpha <- FAUX
+			FINSI
+		FINPOUR
+	FINTANTQUE
+FIN PROCEDURE
+
+BUT : Affichage du mot à deviner avec des '-' pour indiquer le nombre de lettre existant dans le mot.
+PROCEDURE affichage(longMot : ENTIER, tabMotADeviner : CHAINE)
+VAR 
+	i <- 0
+DEBUT
+	POUR i <- 0 A i = longMot FAIRE
+		tabMotADeviner[i] <- '-'
+	FINPOUR
+FIN PROCEDURE
+
+PROCEDURE mauvaiseLettre(tabLettreMauvaise : CHAINE, tmpLettre[3] : CARACTERE, var vie : ENTIER, lettre : CARACTERE)
+DEBUT
+    vie = vie + 1
+    tmpLettre[0] = lettre
+    CONCATENATION(tabLettreMauvaise, tmpLettre, LONGUEUR(tmpLettre))
+FIN PROCEDURE
+
+BUT : Vérifie que la lettre entré par l'utilisateur correspond à une lettre dans tabMot.
+PROCEDURE verifBonnesLettres(tabMot, tabMotADeviner, tabLettreMauvaise, tmpLettre : CHAINE; var bonnesLettres, longMot, vie : ENTIER; lettre : CARACTERE)
+VAR
+	i : ENTIER
+	boolDansLeMot : BOOLEEN
+DEBUT
+	boolDansLeMot <- FAUX
+	POUR i <- 0 A i = longMot FAIRE
+		SI (tabMot[i] = lettre) ET (tabMotADeviner[i] = '-') 
+			tabMotADeviner[i] <- lettre
+			bonnesLettres <- bonnesLettres + 1
+			boolDansLeMot <- VRAI
+		SINON
+			boolDansLeMot <- FAUX
+		FINSI
+	FINPOUR
+
+	//Appel de la procédure mauvaiseLettre()
+	SI (boolDansLeMot = 0) 
+		mauvaiseLettre(tabLettreMauvaise, tmpLettre, vie, lettre)
+	FINSI
+FIN PROCEDURE
+
+
+VAR
+	vie, longMot, bonnesLettres : ENTIER
+	lettre : CARACTERE
+	tabMot, tmpMot, tabMotADeviner, tabLettreMauvaise, tmpLettre : CHAINE
+
+DEBUT
+	vie <- 7
+	longMot <- 0
+	bonnesLettres <- 0
+
+	ECRIRE("Programme du Pendu.")
+
+	verifAlpha(tmpMot, tabMot, longMot)
+	affichage(longMot, tabMotADeviner)
+	effaceEcran()
+
+	TANT QUE (bonnesLettres != longMot) ET (vie > 0) FAIRE
+		ECRIRE(tabMotADeviner)
+		ECRIRE("Entrez une lettre : ")
+		LIRE(lettre)
+
+		verifBonnesLettres(tabMot, tabMotADeviner, tabLettreMauvaise, tmpLettre, bonnesLettres, longMot, vie, lettre)
+
+		ECRIRE("Lettres mauvaises : " & tabLettreMauvaise)
+		ECRIRE("Il vous reste " & vie & " vies.")
+	FINTANTQUE
+
+	SI (vie = 0)
+		ECRIRE("Vous avez perdu !")
+	SINON
+		ECRIRE("Vous avez gagné !!")
+	FINSI
+
+	ECRIRE("Le mot était : " & tabMot)
+FIN.
+
+
