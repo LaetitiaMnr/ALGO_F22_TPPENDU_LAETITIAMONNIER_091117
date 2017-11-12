@@ -38,7 +38,7 @@ DEBUT
 	FINTANTQUE
 
 	effaceEcran()
-	POUR i <- 0 A i = longMot
+	POUR i <- 0 A i = longMot FAIRE
 		tabMotADeviner[i] <- '-'
 	FINPOUR
 
@@ -64,7 +64,7 @@ DEBUT
 		FINSI
 
 		ECRIRE("Lettres mauvaises : " & tabLettreMauvaise)
-		ECRIRE("Il vous reste " & vie)
+		ECRIRE("Il vous reste " & vie & " vies.")
 	FINTANTQUE
 
 	SI (vie = 0)
